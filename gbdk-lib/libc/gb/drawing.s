@@ -181,20 +181,23 @@
 .switch_data::
 	PUSH    DE              ; Save src
 	PUSH    HL              ; Save dst
-	LD      L,B
-	SLA     L
-	SLA     L
-	SLA     L
-	LD      H,#0x00
+	LD      A,B
+	LD      B,#0x00
+	ADD     A
+	ADD     A
+	ADD     A
+	LD      L, A
+	LD      H, B
 	ADD     HL,HL
 	LD      D,H
 	LD      E,L
 
 	LD      HL,#.y_table
-	SLA     C
-	SLA     C
-	SLA     C
-	LD      B,#0x00
+	LD      A, C
+	ADD     A
+	ADD     A
+	ADD     A
+	LD      C, A
 	ADD     HL,BC
 	ADD     HL,BC
 	LD      A,(HL+)
