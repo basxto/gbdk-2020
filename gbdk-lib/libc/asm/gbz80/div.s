@@ -42,12 +42,11 @@ __divsint_rrx_s::
         ld      hl,#2+3
         add     hl,sp
         
-        ld      d,(hl)
-        dec     hl
-        ld      e,(hl)
-        dec     hl
-        ld      a,(hl)
-        dec     hl
+        ld      a,(hl-)
+        ld      d, a
+        ld      a,(hl-)
+        ld      e, a
+        ld      a,(hl-)
         ld      l,(hl)
         ld      h,a
         
@@ -67,12 +66,11 @@ __modsint_rrx_s::
         ld      hl,#2+3
         add     hl,sp
         
-        ld      d,(hl)
-        dec     hl
-        ld      e,(hl)
-        dec     hl
-        ld      a,(hl)
-        dec     hl
+        ld      a,(hl-)
+        ld      d, a
+        ld      a,(hl-)
+        ld      e, a
+        ld      a,(hl-)
         ld      l,(hl)
         ld      h,a
 
@@ -127,12 +125,11 @@ __divuint_rrx_s::
         ld      hl,#2+3
         add     hl,sp
         
-        ld      d,(hl)
-        dec     hl
-        ld      e,(hl)
-        dec     hl
-        ld      a,(hl)
-        dec     hl
+        ld      a,(hl-)
+        ld      d, a
+        ld      a,(hl-)
+        ld      e, a
+        ld      a,(hl-)
         ld      l,(hl)
         ld      h,a
 
@@ -151,12 +148,11 @@ __moduint_rrx_s::
         ld      hl,#2+3
         add     hl,sp
         
-        ld      d,(hl)
-        dec     hl
-        ld      e,(hl)
-        dec     hl
-        ld      a,(hl)
-        dec     hl
+        ld      a,(hl-)
+        ld      d, a
+        ld      a,(hl-)
+        ld      e, a
+        ld      a,(hl-)
         ld      l,(hl)
         ld      h,a
         ;; Fall through

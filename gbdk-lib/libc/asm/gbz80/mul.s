@@ -8,7 +8,7 @@ __mulschar_rrx_s::
 
         ld      e,(hl)
         inc     hl
-        ld      l,(hl)                
+        ld      l,(hl)
 
         ;; Fall through
 __mulschar_rrx_hds::
@@ -31,9 +31,9 @@ __muluchar_rrx_s::
         ld      hl,#2
         add     hl,sp
 
-        ld      e,(hl)
+        ld      a,(hl+)
 
-        inc     hl
+        ld      e, a
         ld      c,(hl)                
 
         ;; Clear the top
@@ -48,12 +48,11 @@ __muluint_rrx_s::
         ld      hl,#2
         add     hl,sp
         
-        ld      e,(hl)
-        inc     hl
-        ld      d,(hl)
-        inc     hl
-        ld      a,(hl)
-        inc     hl
+        ld      a,(hl+)
+        ld      e, a
+        ld      a,(hl+)
+        ld      d, a
+        ld      a,(hl+)
         ld      h,(hl)
         ld      l,a
 
