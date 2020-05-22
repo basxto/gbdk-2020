@@ -82,7 +82,7 @@ _get_sprite_data::
 
 	LDA	HL,7(SP)	; Skip return address and registers
 	LD	A,(HL-)		; BC = data
-	LD	B. A
+	LD	B, A
 	LD	A,(HL-)
 	LD	C, A
 	LD	A,(HL-)		; E = nb_tiles
