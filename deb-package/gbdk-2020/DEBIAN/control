@@ -1,0 +1,9 @@
+Package: gbdk-2020
+Architecture: all
+Maintainer: Nobody
+Priority: optional
+Version: 0
+Homepage: https://github.com/Zal0/gbdk-2020
+Bugs: https://github.com/Zal0/gbdk-2020/issues
+Depends: sdcc
+Description: An updated version of Game Boy Development Kit
