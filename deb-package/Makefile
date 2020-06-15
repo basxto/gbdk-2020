@@ -14,4 +14,4 @@ build: clean
 
 .PHONY:
 clean:
-	rm -r $(PKGDIR)/usr $(PKGDIR)/opt
+	rm -rf $(PKGDIR)/usr $(PKGDIR)/opt
