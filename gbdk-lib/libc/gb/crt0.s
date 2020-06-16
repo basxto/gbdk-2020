@@ -132,37 +132,37 @@
 .code_start:
 	;; Beginning of the code
 	DI			; Disable interrupts
-	LD	D,A		; Store CPU type in D
+	;; Store CPU type
+	LD	(__cpu),A
 	XOR	A
 	;; Initialize the stack
 	LD	SP,#.STACK
 	;; Clear from 0xC000 to 0xDFFF
 	LD	HL,#0xDFFF
-	LD	BC,#0x0020
+	LD	BC,#0x2000
 1$:
 	LD	(HL-),A
-	DEC	B
-	JR	NZ,1$
 	DEC	C
 	JR	NZ,1$
+	DEC	B
+	JR	NZ,1$
+	;; HL is at 0xBFFF
 	;; Clear from 0xFE00 to 0xFEFF
-	LD	HL,#0xFEFF
-	LD	B,#0x00
+	LD	H,#0xFE
+	; B is Z => LD	B,#0x00
 2$:
 	LD	(HL-),A
 	DEC	B
 	JR	NZ,2$
+	;; HL is at 0xFDFF
 	;; Clear from 0xFF80 to 0xFFFF
-	LD	HL,#0xFFFF
+	LD	H,#0xFF
 	LD	B,#0x80
 3$:
 	LD	(HL-),A
 	DEC	B
 	JR	NZ,3$
 ; 	LD	(.mode),A	; Clearing (.mode) is performed when clearing RAM
-	;; Store CPU type
-	LD	A,D
-	LD	(__cpu),A
 
 	;; Turn the screen off
 	CALL	.display_off
