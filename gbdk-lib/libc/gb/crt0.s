@@ -68,7 +68,7 @@
 	POP	AF
 	POP	HL
 	RETI
-
+	; TODO: unify with "call hl" RST
 3$:
 	JP	(HL)
 
@@ -138,8 +138,7 @@
 	LD	SP,#.STACK
 	;; Clear from 0xC000 to 0xDFFF
 	LD	HL,#0xDFFF
-	LD	C,#0x20
-	LD	B,#0x00
+	LD	BC,#0x0020
 1$:
 	LD	(HL-),A
 	DEC	B
@@ -201,7 +200,7 @@
 				; Grey 0 = 00 (Transparent)
 	LDH	(.BGP),A
 	LDH	(.OBP0),A
-	LD	A,#0b00011011
+	CPL ;LD	A,#0b00011011
 	LDH	(.OBP1),A
 
 	;; Turn the screen on
@@ -564,11 +563,12 @@ _set_interrupts::
 	EI			; Enable interrupts
 	RET
 
+	; they all call .remove_int, which overwrites A
 _remove_VBL::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.remove_VBL
 	POP	BC
@@ -577,8 +577,8 @@ _remove_VBL::
 _remove_LCD::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.remove_LCD
 	POP	BC
@@ -587,8 +587,8 @@ _remove_LCD::
 _remove_TIM::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.remove_TIM
 	POP	BC
@@ -597,8 +597,8 @@ _remove_TIM::
 _remove_SIO::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.remove_SIO
 	POP	BC
@@ -607,18 +607,19 @@ _remove_SIO::
 _remove_JOY::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.remove_JOY
 	POP	BC
 	RET
-	
+
+	; they all call .add_int, which overwrites A
 _add_VBL::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.add_VBL
 	POP	BC
@@ -627,8 +628,8 @@ _add_VBL::
 _add_LCD::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.add_LCD
 	POP	BC
@@ -637,8 +638,8 @@ _add_LCD::
 _add_TIM::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.add_TIM
 	POP	BC
@@ -647,8 +648,8 @@ _add_TIM::
 _add_SIO::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.add_SIO
 	POP	BC
@@ -657,8 +658,8 @@ _add_SIO::
 _add_JOY::
 	PUSH	BC
 	LDA	HL,4(SP)	; Skip return address and registers
-	LD	C,(HL)
-	INC	HL
+	LD	A,(HL+)
+	LD	C, A
 	LD	B,(HL)
 	CALL	.add_JOY
 	POP	BC
@@ -684,18 +685,18 @@ __printTStates::
 	;;   .dw bank
 	;;   remainder of the code
 	;; Total m-cycles:
-	;;	3+3+4 + 2+2+2+2+2+2 + 4+4+ 3+4+1+1+1
-	;;      = 40 for the call
+	;;	3+3+4 + 2+1+2+1+2+2 + 4+4+ 3+4+1+1+1
+	;;      = 38 for the call
 	;;	3+3+4+3+1
 	;;	= 14 for the ret
 banked_call::
 	pop	hl		; Get the return address
 	ldh	a,(__current_bank)
 	push	af		; Push the current bank onto the stack
-	ld	e,(hl)		; Fetch the call address
-	inc	hl
-	ld	d,(hl)
-	inc	hl
+	ld	a,(hl+)		; Fetch the call address
+	ld	e, a
+	ld	a,(hl+)
+	ld	d, a
 	ld	a,(hl+)		; ...and page
 	inc	hl		; Yes this should be here
 	push	hl		; Push the real return address
