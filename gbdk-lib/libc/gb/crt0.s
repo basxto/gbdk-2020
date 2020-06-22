@@ -692,8 +692,8 @@ __printTStates::
 	;;   .dw bank
 	;;   remainder of the code
 	;; Total m-cycles:
-	;;	3+3+4 + 2+2+2+2+2+2 + 4+4+ 3+4+1+1+1
-	;;      = 40 for the call
+	;;	3+3+4 + 2+1+2+1+2+2 + 4+ 3+4+1+1+(4+1)
+	;;      = 38 for the call
 	;;	3+3+4+3+1
 	;;	= 14 for the ret
 banked_call::
@@ -709,11 +709,11 @@ banked_call::
 	push	hl		; Push the real return address
 	ldh	(__current_bank),a
 	ld	(.MBC1_ROM_PAGE),a	; Perform the switch
-	ld	hl,#banked_ret	; Push the fake return address
-	push	hl
 	ld	l,e
 	ld	h,d
-	jp	(hl)
+	; this will set the return address to banked_ret
+	; ___sdcc_call_hl
+	RST #0x20
 
 banked_ret::
 	pop	hl		; Get the return address
