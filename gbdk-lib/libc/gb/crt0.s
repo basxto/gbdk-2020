@@ -142,31 +142,29 @@
 .code_start:
 	;; Beginning of the code
 	DI			; Disable interrupts
-	LD	D,A		; Store CPU type in D
+	LD	(__cpu),A		; Store CPU type
 	XOR	A
 	;; Initialize the stack
 	LD	SP,#.STACK
 	;; Clear from 0xC000 to 0xDFFF
 	LD	HL,#0xDFFF
 	LD	C,#0x20
-	LD	B,#0x00
+	LD	B, A
 1$:
 	LD	(HL-),A
 	DEC	B
 	JR	NZ,1$
 	DEC	C
 	JR	NZ,1$
+	; HL is at 0xBFFF
 	;; Clear from 0xFF80 to 0xFFFF
-	LD	HL,#0xFFFF
+	LD	H,#0xFF
 	LD	B,#0x80
 3$:
 	LD	(HL-),A
 	DEC	B
 	JR	NZ,3$
 ; 	LD	(.mode),A	; Clearing (.mode) is performed when clearing RAM
-	;; Store CPU type
-	LD	A,D
-	LD	(__cpu),A
 
 	;; Turn the screen off
 	CALL	.display_off
@@ -427,8 +425,8 @@ gsinit::
 	INC	HL
 	JR	1$
 2$:
-	LD	(HL),B
-	DEC	HL
+	LD	A, B
+	LD	(HL+),A
 	LD	(HL),C
 	RET
 
@@ -702,10 +700,10 @@ banked_call::
 	pop	hl		; Get the return address
 	ldh	a,(__current_bank)
 	push	af		; Push the current bank onto the stack
-	ld	e,(hl)		; Fetch the call address
-	inc	hl
-	ld	d,(hl)
-	inc	hl
+	ld	a,(hl+)		; Fetch the call address
+	ld	e, a
+	ld	a,(hl+)
+	ld	d, a
 	ld	a,(hl+)		; ...and page
 	inc	hl		; Yes this should be here
 	push	hl		; Push the real return address

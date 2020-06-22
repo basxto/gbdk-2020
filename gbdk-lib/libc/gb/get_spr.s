@@ -12,8 +12,7 @@
 	LD	B,#0x00
 	ADD	HL,BC
 
-	LD	A,(HL)		; Get sprite number
-	LD	E,A
+	LD	E,(HL)		; Get sprite number
 	RET
 
 _get_sprite_tile::

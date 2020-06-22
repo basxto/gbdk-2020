@@ -11,8 +11,7 @@
 	LD	B,#0x00
 	ADD	HL,BC
 
-	LD	A,(HL)		; Get sprite properties
-	LD	E,A
+	LD	E,(HL)		; Get sprite properties
 	RET
 
 _get_sprite_prop::

@@ -113,45 +113,49 @@ _cpu_fast::			; Banked
 	LDH	A,(.KEY1)
 	AND	#0x80		; Is GBC in double speed mode?
 	RET	NZ		; Yes, exit
-        JR	shift_speed
+	JR	shift_speed
 
 
 _cgb_compatibility::		; Banked
-
+	; avoid saving bc
+	LD	HL, #.BCPS
 	LD	A,#0x80
-	LDH	(.BCPS),A	; Set default bkg palette
+	LD	(HL),A	; Set default bkg palette
 	OR	#0x7f		; 0xff: White
-	LDH	(.BCPD),A
+	INC	L		; .BCPD
+	LD	(HL),A
 	RRA			; 0x7f
-	LDH	(.BCPD),A
+	LD	(HL),A
 	LD	A,#0xb5		; Light gray
-	LDH	(.BCPD),A
+	LD	(HL),A
 	LD	A,#0x56
-	LDH	(.BCPD),A
+	LD	(HL),A
 	LD	A,#0x4a		; Dark gray
-	LDH	(.BCPD),A
+	LD	(HL),A
 	LD	A,#0x29
-	LDH	(.BCPD),A
+	LD	(HL),A
 	XOR	A		; Black
-	LDH	(.BCPD),A
-	LDH	(.BCPD),A
+	LD	(HL),A
+	LD	(HL),A
 
 	LD	A,#0x80
-	LDH	(.OCPS),A	; Set default sprite palette
+	DEC	L		; .OCPS
+	LD	(HL),A	; Set default sprite palette
 	OR	#0x7f		; 0xff: White
-	LDH	(.OCPD),A
+	INC	L		; .BCPD
+	LD	(HL),A
 	RRA
-	LDH	(.OCPD),A
+	LD	(HL),A
 	LD	A,#0xb5		; Light gray
-	LDH	(.OCPD),A
+	LD	(HL),A
 	LD	A,#0x56
-	LDH	(.OCPD),A
+	LD	(HL),A
 	LD	A,#0x4a		; Dark gray
-	LDH	(.OCPD),A
+	LD	(HL),A
 	LD	A,#0x29
-	LDH	(.OCPD),A
+	LD	(HL),A
 	XOR	A		; Black
-	LDH	(.OCPD),A
-	LDH	(.OCPD),A
+	LD	(HL),A
+	LD	(HL),A
 
 	RET

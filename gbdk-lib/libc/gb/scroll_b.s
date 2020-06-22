@@ -12,9 +12,9 @@ _scroll_bkg::
 	LDH	A,(.SCX)	; Yes
 	ADD	(HL)
 	LDH	(.SCX),A
+	XOR	A
 1$:
 	INC	HL
-	XOR	A
 	CP	(HL)		; Is y != 0
 	JR	Z,2$
 
