@@ -1,4 +1,4 @@
-This tool uses lcc from the build directory, [bgb][] and [image magick][magick].
+This tool uses lcc from the [build][] directory, [bgb][] and [image magick][magick].
 If you want to create a result image you need [optipng][].
 
 Run tests with:
@@ -20,10 +20,11 @@ TODO
 Linux
 =====
 
-You need to have [image magick][magick] installed and added to your PATH variable.
+You need to have [magick][magick] installed and added to your PATH variable.
 `bgb.exe` must be placed in this directory.
 
 
 [bgb]: http://bgb.bircd.org/#downloads
 [magick]: https://imagemagick.org/www/script/download.php
-[optipng]
+[optipng]: https://sourceforge.net/projects/optipng/files/OptiPNG/
+[build]: ../../build/gbdk/
