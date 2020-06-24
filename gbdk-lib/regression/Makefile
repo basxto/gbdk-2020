@@ -1,4 +1,4 @@
-LCC?=lcc -Wa-l -Wl-m -Wl-j
+LCC?=../../build/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
 MKROM?=$(LCC)
 CC=$(LCC) -c $(CFLAGS)
 CA=$(LCC) -c
