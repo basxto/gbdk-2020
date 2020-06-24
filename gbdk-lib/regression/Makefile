@@ -3,7 +3,7 @@ MKROM?=$(LCC)
 CC=$(LCC) -c $(CFLAGS)
 CA=$(LCC) -c
 PNGOPT?=optipng
-PNGCMP?=magick compare
+MGK?=magick
 ifeq ($(OS),Windows_NT)
 EMU?=bgb.exe
 else
@@ -14,33 +14,36 @@ endif
 test: test_bkg
 
 .PHONY:
-%: %.png
-	$(PNGCMP) $< $@_result.png $@_diff.png
+%: %.bmp
+	$(MGK) compare -metric mae $< $@_result.png $@_diff.png
+	@printf "\nTest %s successful!\n" $@
 
-%.png: %.gb
+%.bmp: %.gb
 	$(EMU) -set "DebugSrcBrk=1" -hf -stateonexit -screenonexit $@ -rom $<
 
-%_result.png: %.png
-	cp $^ $@
-	$(PNGOPT) $@
+%_result.png: %.bmp
+	$(PNGOPT) $^ -force -out $@
 
 .PHONY:
 debug_%: %.gb
 	$(EMU) -set "DebugSrcBrk=1" $@ -rom $^
 
 %.gb: %.rel
-	$(MKROM) -o $@ $^
+	$(MKROM) -o $@ $<
 
-%.rel: %.c
-	$(CC) -o $@ $^
+%.rel: %.c FORCE
+	$(CC) -o $@ $<
 
-%.rel: %.s
-	$(CA) -o $@ $^
+%.rel: %.s FORCE
+	$(CA) -o $@ $<
 
 .PHONY:
 clean:
-	find . -type f -regex '.*.\(asm\|lst\|map\|sym\|sna\)' -delete
+	find . -type f -regex '.*.\(asm\|lst\|map\|sym\|sna\|bmp\|ini\|gb\)' -delete
 	find . -type f \( -name "*.png" ! -iname "*_result.png" \) -delete
 
 # disable built in rules
 .SUFFIXES:
+
+# always rebuild those rules
+FORCE:
