@@ -15,8 +15,7 @@ test: test_bkg test_win
 
 .PHONY:
 %: %.bmp
-	$(MGK) compare -metric mae $< $@_result.png $@_diff.png
-	@printf "\nTest '%s' successful!\n" $@
+	./test.sh "$(MGK)" $< $@
 
 %.bmp: %.gb
 	$(EMU) -set "DebugSrcBrk=1" -hf -stateonexit -screenonexit $@ -rom $<

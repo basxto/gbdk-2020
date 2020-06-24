@@ -11,6 +11,10 @@ If you want to use different paths:
 $ make test MGK=/path/to/magick EMU=/path/to/bgb.exe PNGOPT=/path/to/optipng LCC="/path/to/lcc -Wa-l -Wl-m -Wl-j"
 ```
 
+If you just want the test results:
+```
+make 2>&1 | grep "Test.*\(successful\|failed\)"
+```
 
 Windows
 =======
