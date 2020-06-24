@@ -2,8 +2,16 @@ LCC?=../../build/gbdk/bin/lcc -Wa-l -Wl-m -Wl-j
 MKROM?=$(LCC)
 CC=$(LCC) -c $(CFLAGS)
 CA=$(LCC) -c
+ifeq ($(OS),Windows_NT)
+PNGOPT?=optipng.exe
+else
 PNGOPT?=optipng
+endif
+ifeq ($(OS),Windows_NT)
+MGK?=ImageMagick.exe
+else
 MGK?=magick
+endif
 ifeq ($(OS),Windows_NT)
 EMU?=bgb.exe
 else
