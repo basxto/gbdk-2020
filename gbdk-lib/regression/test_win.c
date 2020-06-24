@@ -1,11 +1,12 @@
 #include <gb/gb.h>
 #include "helper/box.c"
-UINT8 tilebuffer[16*9];
 
 /* TESTS:
  *  set_bkg_data()
  *  set_bkg_tiles()
+ *  get_win_tiles()
  *  scroll_bkg()
+ *  move_win()
  *  wait_vbl_done()
 **/
 void main() {
@@ -22,25 +23,15 @@ void main() {
     HIDE_WIN;
     HIDE_SPRITES;
     SHOW_BKG;
+    SHOW_WIN;
     DISPLAY_ON;
     // generate box tiles
+    scroll_bkg(2, 85);
+    move_win(6, 98);
     box_generate(0);
-    // read them back
-    get_bkg_data(0, 9, tilebuffer);
-    // generate inverted tiles
-    for(UINT8 i = 0; i < 16*9; ++i)
-        tilebuffer[i] = ~tilebuffer[i];
-    set_bkg_data(9, 9, tilebuffer);
+    set_bkg_tiles(8, 20, 5, 2, boxmap);
+    set_win_tiles(8, 0, 5, 2, boxmap+20);
 
-    // draw box
-    set_bkg_tiles(8, 5, 5, 5, boxmap);
-    set_bkg_tiles(4, 8, 5, 5, boxmap);
-    // shift to black box
-    for(UINT8 i = 0; i < 5*5; ++i)
-        boxmap[i] += 9;
-    set_bkg_tiles(12, 8, 5, 5, boxmap);
-    // move background a bit
-    scroll_bkg(5, 9);
     wait_vbl_done();
     wait_vbl_done();
     __asm__(" ld b,b");

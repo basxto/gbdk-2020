@@ -11,12 +11,12 @@ EMU?=wine bgb.exe
 endif
 
 .PHONY:
-test: test_bkg
+test: test_bkg test_win
 
 .PHONY:
 %: %.bmp
 	$(MGK) compare -metric mae $< $@_result.png $@_diff.png
-	@printf "\nTest %s successful!\n" $@
+	@printf "\nTest '%s' successful!\n" $@
 
 %.bmp: %.gb
 	$(EMU) -set "DebugSrcBrk=1" -hf -stateonexit -screenonexit $@ -rom $<
