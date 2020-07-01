@@ -9,7 +9,7 @@ build: clean
 	mkdir -p $(PKGDIR)/opt
 	mv ../build/gbdk/bin $(PKGDIR)/usr/
 	mv ../build/gbdk $(PKGDIR)/opt/$(PKGNAME)
-	find /opt/$(PKGNAME)/ -type f -name '*.bat' -delete
+	find $(PKGDIR)/opt/$(PKGNAME)/ -type f -name '*.bat' -delete
 	dpkg-deb --build $(PKGDIR)
 
 .PHONY:
