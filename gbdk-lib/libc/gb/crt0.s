@@ -8,8 +8,9 @@
 	.area	_HEADER (ABS)
 
 	;; RST vectors
-;	.org	0x00		; Trap, utilized by crash_handler.h
-
+;	.org	0x00		; Trap, utilized by crash_handler.h ; removed from crash_handler
+	.org	0x00
+	JP	.code_start
 ;	.org	0x08		; --profile handler utilized by bgb_emu.h
 
 ;	.org	0x10		; empty
