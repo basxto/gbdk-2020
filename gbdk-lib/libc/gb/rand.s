@@ -50,7 +50,7 @@
 
 	;; Random number generator using the linear congruential method
 	;;  X(n+1) = (a*X(n)+c) mod m
-	;; with a = 17, m = 16 and c = $5c93 (arbitrarily)
+	;; with a = 17, m = 65536 and c = $5c93 (arbitrarily)
 	;; The seed value is also chosen arbitrarily as $a27e
 	;; Ref : D. E. Knuth, "The Art of Computer Programming" , Volume 2
 	;;
